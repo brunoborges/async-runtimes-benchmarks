@@ -1,19 +1,18 @@
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class VirtualThreads {
 
     public static void main(String[] args) throws InterruptedException {
-	int numTasks = 100000;
+	int numTasks = 100_000;
         if (args.length > 0) {
             numTasks = Integer.parseInt(args[0]);
         }
 
-        List<Thread> threads = new ArrayList<>();
+        var threads = new HashSet<>();
 
         for (int i = 0; i < numTasks; i++) {
-            Thread thread = Thread.startVirtualThread(() -> {
+            var thread = Thread.startVirtualThread(() -> {
                 try {
                     Thread.sleep(Duration.ofSeconds(10));
                 } catch (InterruptedException e) {
@@ -24,10 +23,10 @@ public class VirtualThreads {
         }
 
         // Wait for all threads to complete
-        for (Thread thread : threads) {
+        for (var thread : threads) {
             thread.join();
         }
 
-        System.out.println("All fibers complete");
+        System.out.println("All " + numTasks + " fibers complete");
     }
 }
